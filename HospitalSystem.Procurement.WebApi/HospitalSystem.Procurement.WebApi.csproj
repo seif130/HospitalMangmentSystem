@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HospitalSystem.Application\HospitalSystem.Application.csproj" />
+    <ProjectReference Include="..\HospitalSystem.Procurement.Application\HospitalSystem.Procurement.Application.csproj" />
+    <ProjectReference Include="..\HospitalSystem.Procurement.Infrastructure\HospitalSystem.Procurement.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Modules\Procurement\Endpoints\PurchaseOrders\" />
+    <Folder Include="Modules\Procurement\Endpoints\PurchaseRequests\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.13" />
+    <PackageReference Include="Microsoft.AspNetCore.Routing" Version="2.3.13" />
+  </ItemGroup>
+
+</Project>

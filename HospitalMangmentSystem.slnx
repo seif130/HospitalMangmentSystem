@@ -1,0 +1,29 @@
+<Solution>
+  <Folder Name="/Src/" />
+  <Folder Name="/Src/Core/">
+    <Project Path="HospitalSystem.Application/HospitalSystem.Application.csproj" />
+    <Project Path="HospitalSystem.Domain/HospitalSystem.Domain.csproj" />
+  </Folder>
+  <Folder Name="/Src/Host/">
+    <Project Path="HospitalMangmentSystem/HospitalMangmentSystem.csproj" />
+  </Folder>
+  <Folder Name="/Src/Modules/" />
+  <Folder Name="/Src/Modules/PharmacyAndInventory/">
+    <Project Path="HospitalSystem.PharmacyAndInventory.Application/HospitalSystem.PharmacyAndInventory.Application.csproj" />
+    <Project Path="HospitalSystem.PharmacyAndInventory.Domain/HospitalSystem.PharmacyAndInventory.Domain.csproj" />
+    <Project Path="HospitalSystem.PharmacyAndInventory.Infrastructure/HospitalSystem.PharmacyAndInventory.Infrastructure.csproj" />
+    <Project Path="HospitalSystem.PharmacyAndInventory.WebApi/HospitalSystem.PharmacyAndInventory.WebApi.csproj" />
+  </Folder>
+  <Folder Name="/Src/Modules/Procurement/">
+    <Project Path="HospitalSystem.Procurement.Application/HospitalSystem.Procurement.Application.csproj" />
+    <Project Path="HospitalSystem.Procurement.Domain/HospitalSystem.Procurement.Domain.csproj" />
+    <Project Path="HospitalSystem.Procurement.Infrastructure/HospitalSystem.Procurement.Infrastructure.csproj" />
+    <Project Path="HospitalSystem.Procurement.WebApi/HospitalSystem.Procurement.WebApi.csproj" />
+  </Folder>
+  <Folder Name="/Src/Modules/Scheduling/">
+    <Project Path="HospitalSystem.Scheduling.Application/HospitalSystem.Scheduling.Application.csproj" />
+    <Project Path="HospitalSystem.Scheduling.Domain/HospitalSystem.Scheduling.Domain.csproj" />
+    <Project Path="HospitalSystem.Scheduling.Infrastructure/HospitalSystem.Scheduling.Infrastructure.csproj" />
+    <Project Path="HospitalSystem.Scheduling.WebApi/HospitalSystem.Scheduling.WebApi.csproj" />
+  </Folder>
+</Solution>
