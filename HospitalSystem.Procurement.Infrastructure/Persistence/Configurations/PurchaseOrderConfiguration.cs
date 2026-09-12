@@ -10,34 +10,40 @@ internal sealed class PurchaseOrderConfiguration : IEntityTypeConfiguration<Purc
     {
         builder.ToTable("PurchaseOrders");
         builder.HasKey(x => x.Id);
-        builder.Property(x => x.Id).HasConversion(StrongIdValueConverters.PurchaseOrderId()).ValueGeneratedNever();
+        builder.Ignore(x => x.DomainEvents);
+        builder.Property(x => x.Id).HasConversion(StrongIdValueConverters.PurchaseOrderId());
         builder.Property(x => x.VendorId).HasConversion(StrongIdValueConverters.VendorId()).IsRequired();
         builder.Property(x => x.PurchaseRequestId).HasConversion(StrongIdValueConverters.PurchaseRequestId());
         builder.Property(x => x.Status).HasConversion<int>().IsRequired();
 
         builder.OwnsOne(x => x.TotalAmount, money =>
         {
-            money.Property(x => x.Amount).HasColumnName("TotalAmount").HasPrecision(19, 4).IsRequired();
-            money.Property(x => x.Currency).HasColumnName("Currency").HasMaxLength(3).IsRequired();
+            money.Property(x => x.Amount).HasColumnName("TotalAmount").HasPrecision(18, 2).IsRequired();
+            money.Property(x => x.Currency).HasColumnName("TotalCurrency").HasMaxLength(3).IsRequired();
         });
 
         builder.OwnsMany(x => x.Lines, line =>
         {
             line.ToTable("PurchaseOrderLines");
-            line.WithOwner().HasForeignKey("PurchaseOrderId");
-            line.Property<Guid>("Id").ValueGeneratedOnAdd();
+            line.Property<Guid>("Id");
             line.HasKey("Id");
             line.Property(x => x.ItemName).HasMaxLength(300).IsRequired();
             line.Property(x => x.Quantity).IsRequired();
             line.OwnsOne(x => x.UnitPrice, money =>
             {
-                money.Property(x => x.Amount).HasColumnName("UnitPriceAmount").HasPrecision(19, 4).IsRequired();
+                money.Property(x => x.Amount).HasColumnName("UnitPriceAmount").HasPrecision(18, 2).IsRequired();
                 money.Property(x => x.Currency).HasColumnName("UnitPriceCurrency").HasMaxLength(3).IsRequired();
             });
+            line.Ignore(x => x.Total);
         });
 
+        builder.Property(x => x.CreatedBy).HasMaxLength(100);
+        builder.Property(x => x.LastModifiedBy).HasMaxLength(100);
+        builder.Property(x => x.DeletedBy).HasMaxLength(100);
+
+        builder.HasIndex(x => x.VendorId);
+        builder.HasIndex(x => x.PurchaseRequestId);
         builder.HasIndex(x => new { x.VendorId, x.Status });
-        builder.HasIndex(x => new { x.PurchaseRequestId });
-        builder.Navigation(x => x.Lines).UsePropertyAccessMode(PropertyAccessMode.Field);
+        builder.HasQueryFilter(x => !x.IsDeleted);
     }
 }

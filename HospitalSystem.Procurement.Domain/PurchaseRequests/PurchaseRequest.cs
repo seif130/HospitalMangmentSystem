@@ -1,8 +1,8 @@
-using HospitalSystem.Domain.Identifiers;
 using HospitalSystem.Domain.Modules.Procurement.PurchaseRequests.Enums;
 using HospitalSystem.Domain.Modules.Procurement.PurchaseRequests.Events;
 using HospitalSystem.Domain.Primitives;
 using HospitalSystem.Domain.ValueObjects;
+using HospitalSystem.Procurement.Domain.identfires;
 
 namespace HospitalSystem.Domain.Modules.Procurement.PurchaseRequests;
 

@@ -1,4 +1,4 @@
-using HospitalSystem.Domain.Identifiers;
+using HospitalSystem.Procurement.Domain.identfires;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HospitalSystem.Procurement.Infrastructure.Persistence;

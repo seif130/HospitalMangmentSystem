@@ -12,10 +12,18 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.12" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="10.0.12" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="10.0.12" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.12" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.12" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HospitalSystem.Application\HospitalSystem.Application.csproj" />
+    <ProjectReference Include="..\HospitalSystem.Domain\HospitalSystem.Domain.csproj" />
     <ProjectReference Include="..\HospitalSystem.Procurement.Application\HospitalSystem.Procurement.Application.csproj" />
+    <ProjectReference Include="..\HospitalSystem.Procurement.Domain\HospitalSystem.Procurement.Domain.csproj" />
   </ItemGroup>
 
 </Project>

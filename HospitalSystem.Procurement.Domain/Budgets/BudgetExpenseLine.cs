@@ -5,9 +5,14 @@ namespace HospitalSystem.Domain.Modules.Procurement.Budgets;
 
 public sealed record BudgetExpenseLine
 {
-    public string Description { get; }
-    public Money Amount { get; }
-    public DateTime IncurredOnUtc { get; }
+    public string Description { get; private set; } = null!;
+    public Money Amount { get; private set; } = null!;
+    public DateTime IncurredOnUtc { get; private set; }
+
+    // EF Core
+    private BudgetExpenseLine()
+    {
+    }
 
     public BudgetExpenseLine(
         string description,

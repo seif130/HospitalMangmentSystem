@@ -1,5 +1,5 @@
-﻿using HospitalSystem.Application.Models;
-using HospitalSystem.Application.Shared.Messaging;
+﻿using HospitalSystem.Application.Abstractions.Messaging;
+using HospitalSystem.Application.Models;
 using HospitalSystem.Procurement.Application.Modules.Procurement.DTOs;
 using System;
 using System.Collections.Generic;

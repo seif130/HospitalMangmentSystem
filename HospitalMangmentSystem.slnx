@@ -1,8 +1,10 @@
 <Solution>
   <Folder Name="/Src/" />
   <Folder Name="/Src/Core/">
-    <Project Path="HospitalSystem.Application/HospitalSystem.Application.csproj" />
-    <Project Path="HospitalSystem.Domain/HospitalSystem.Domain.csproj" />
+    <Project Path="HospitalSystem.Application/HospitalSystem.Application.csproj" Id="d29d3b9a-096e-4681-a70a-47d785fe40f0" />
+    <Project Path="HospitalSystem.Domain/HospitalSystem.Domain.csproj" Id="7f3725c5-c9a8-4c2a-af69-4c2f68c28f26" />
+    <Project Path="HospitalSystem.Infrastructure/HospitalSystem.Infrastructure.csproj" Id="bf7f423f-9930-4b80-b383-90611f59b3b5" />
+    <Project Path="HospitalSystem.WebApi.Common/HospitalSystem.WebApi.Common.csproj" Id="71c94d19-03ff-4d2c-829d-b30371dee1ef" />
   </Folder>
   <Folder Name="/Src/Host/">
     <Project Path="HospitalMangmentSystem/HospitalMangmentSystem.csproj" />

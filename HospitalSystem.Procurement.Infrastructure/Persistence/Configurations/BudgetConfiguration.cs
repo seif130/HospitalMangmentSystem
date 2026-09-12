@@ -10,60 +10,42 @@ internal sealed class BudgetConfiguration : IEntityTypeConfiguration<Budget>
     {
         builder.ToTable("Budgets");
         builder.HasKey(x => x.Id);
-        builder.Property(x => x.Id)
-            .HasConversion(StrongIdValueConverters.BudgetId())
-            .ValueGeneratedNever();
-        builder.Property(x => x.DepartmentId)
-            .HasConversion(StrongIdValueConverters.DepartmentId())
-            .IsRequired();
+        builder.Ignore(x => x.DomainEvents);
+        builder.Property(x => x.Id).HasConversion(StrongIdValueConverters.BudgetId());
+        builder.Property(x => x.DepartmentId).HasConversion(StrongIdValueConverters.DepartmentId()).IsRequired();
 
         builder.OwnsOne(x => x.FiscalPeriod, period =>
         {
-            period.Property(x => x.Start)
-                .HasColumnName("FiscalStart")
-                .IsRequired();
-            period.Property(x => x.End)
-                .HasColumnName("FiscalEnd");
+            period.Property(x => x.Start).HasColumnName("FiscalStartUtc").IsRequired();
+            period.Property(x => x.End).HasColumnName("FiscalEndUtc");
+            period.Ignore(x => x.IsOpen);
         });
 
         builder.OwnsOne(x => x.AllocatedAmount, money =>
         {
-            money.Property(x => x.Amount)
-                .HasColumnName("AllocatedAmount")
-                .HasPrecision(19, 4)
-                .IsRequired();
-            money.Property(x => x.Currency)
-                .HasColumnName("AllocatedCurrency")
-                .HasMaxLength(3)
-                .IsRequired();
+            money.Property(x => x.Amount).HasColumnName("AllocatedAmount").HasPrecision(18, 2).IsRequired();
+            money.Property(x => x.Currency).HasColumnName("AllocatedCurrency").HasMaxLength(3).IsRequired();
         });
 
         builder.OwnsMany(x => x.Expenses, expense =>
         {
             expense.ToTable("BudgetExpenses");
-            expense.WithOwner().HasForeignKey("BudgetId");
-            expense.Property<Guid>("Id").ValueGeneratedOnAdd();
+            expense.Property<Guid>("Id");
             expense.HasKey("Id");
-            expense.Property(x => x.Description)
-                .HasMaxLength(500)
-                .IsRequired();
+            expense.Property(x => x.Description).HasMaxLength(500).IsRequired();
             expense.Property(x => x.IncurredOnUtc).IsRequired();
-
             expense.OwnsOne(x => x.Amount, money =>
             {
-                money.Property(x => x.Amount)
-                    .HasColumnName("Amount")
-                    .HasPrecision(19, 4)
-                    .IsRequired();
-                money.Property(x => x.Currency)
-                    .HasColumnName("Currency")
-                    .HasMaxLength(3)
-                    .IsRequired();
+                money.Property(x => x.Amount).HasColumnName("Amount").HasPrecision(18, 2).IsRequired();
+                money.Property(x => x.Currency).HasColumnName("Currency").HasMaxLength(3).IsRequired();
             });
         });
 
-        builder.HasIndex(x => new { x.DepartmentId });
-        builder.Navigation(x => x.Expenses)
-            .UsePropertyAccessMode(PropertyAccessMode.Field);
+        builder.Property(x => x.CreatedBy).HasMaxLength(100);
+        builder.Property(x => x.LastModifiedBy).HasMaxLength(100);
+        builder.Property(x => x.DeletedBy).HasMaxLength(100);
+
+        builder.HasIndex(x => x.DepartmentId);
+        builder.HasQueryFilter(x => !x.IsDeleted);
     }
 }

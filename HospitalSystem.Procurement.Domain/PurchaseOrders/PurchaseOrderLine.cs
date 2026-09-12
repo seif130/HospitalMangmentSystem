@@ -5,10 +5,17 @@ namespace HospitalSystem.Domain.Modules.Procurement.PurchaseOrders;
 
 public sealed record PurchaseOrderLine
 {
-    public string ItemName { get; }
-    public int Quantity { get; }
-    public Money UnitPrice { get; }
-    public Money Total => UnitPrice.Multiply(Quantity);
+    public string ItemName { get; private set; } = null!;
+    public int Quantity { get; private set; }
+    public Money UnitPrice { get; private set; } = null!;
+
+    public Money Total
+        => UnitPrice.Multiply(Quantity);
+
+    // EF Core
+    private PurchaseOrderLine()
+    {
+    }
 
     public PurchaseOrderLine(
         string itemName,

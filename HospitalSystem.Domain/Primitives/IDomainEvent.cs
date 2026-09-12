@@ -1,12 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
+namespace HospitalSystem.Domain.Primitives;
 
-namespace HospitalSystem.Domain.Primitives
+public interface IDomainEvent
 {
-    public interface IDomainEvent
-    {
-        Guid EventId { get; }
-        DateTime OccurredOnUtc { get; }
-    }
+    Guid EventId { get; }
+    DateTime OccurredOnUtc { get; }
 }

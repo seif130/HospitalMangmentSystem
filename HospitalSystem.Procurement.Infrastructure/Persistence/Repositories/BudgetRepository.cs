@@ -1,12 +1,14 @@
-using HospitalSystem.Domain.Identifiers;
+using HospitalSystem.Procurement.Application.Abstractions.Persistence;
 using HospitalSystem.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using HospitalSystem.Domain.Modules.Procurement.Budgets;
-using HospitalSystem.Domain.Modules.Procurement.Budgets.Contract;
+using HospitalSystem.Procurement.Domain.identfires;
+using HospitalSystem.Infrastructure.Modules.Procurement.Persistence.Repositories;
 
 namespace HospitalSystem.Procurement.Infrastructure.Persistence.Repositories;
 
-internal sealed class BudgetRepository(ProcurementDbContext context)
+internal sealed class BudgetRepository(
+    ProcurementDbContext context)
     : Repository<Budget, BudgetId>(context), IBudgetRepository
 {
     public async Task<(IReadOnlyList<Budget> Items, int TotalCount)> GetByDepartmentAsync(
@@ -15,21 +17,20 @@ internal sealed class BudgetRepository(ProcurementDbContext context)
         int pageSize,
         CancellationToken ct = default)
     {
-        ValidatePaging(pageNumber, pageSize);
-
         var query = DbSet
             .AsNoTracking()
             .Where(x => x.DepartmentId == departmentId)
             .OrderByDescending(x => x.FiscalPeriod.Start)
             .ThenByDescending(x => x.Id.Value);
 
-        var total = await query.CountAsync(ct);
+        var totalCount = await query.CountAsync(ct);
+
         var items = await query
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync(ct);
 
-        return (items, total);
+        return (items, totalCount);
     }
 
     public Task<bool> ExistsOverlappingAsync(
@@ -40,25 +41,19 @@ internal sealed class BudgetRepository(ProcurementDbContext context)
         ArgumentNullException.ThrowIfNull(fiscalPeriod);
 
         if (fiscalPeriod.IsOpen)
+        {
             throw new ArgumentException(
                 "Budget fiscal period must have an end date.",
                 nameof(fiscalPeriod));
+        }
 
         return DbSet
             .AsNoTracking()
-            .AnyAsync(x =>
-                x.DepartmentId == departmentId &&
-                x.FiscalPeriod.Start < fiscalPeriod.End!.Value &&
-                fiscalPeriod.Start < x.FiscalPeriod.End!.Value,
+            .AnyAsync(
+                x =>
+                    x.DepartmentId == departmentId &&
+                    x.FiscalPeriod.Start < fiscalPeriod.End!.Value &&
+                    fiscalPeriod.Start < x.FiscalPeriod.End!.Value,
                 ct);
-    }
-
-    private static void ValidatePaging(int pageNumber, int pageSize)
-    {
-        if (pageNumber <= 0)
-            throw new ArgumentOutOfRangeException(nameof(pageNumber));
-
-        if (pageSize <= 0)
-            throw new ArgumentOutOfRangeException(nameof(pageSize));
     }
 }

@@ -1,26 +1,17 @@
 using FluentValidation;
-using HospitalSystem.Application.Common.Behaviors;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using HospitalSystem.Application.Modules.Procurement.Abstractions;
-using HospitalSystem.Application.Modules.Procurement.Events;
-using HospitalSystem.Application.Shared.Behaviors;
 
-namespace HospitalSystem.Application.Modules.Procurement.Extensions;
+namespace HospitalSystem.Procurement.Application;
 
 public static class ProcurementApplicationExtensions
 {
     public static IServiceCollection AddProcurementApplication(this IServiceCollection services)
     {
         var assembly = typeof(ProcurementApplicationExtensions).Assembly;
-        services.AddMediatR(poc =>
-        {
-            poc.RegisterServicesFromAssembly(assembly);
-            poc.AddOpenBehavior(typeof(LoggingBehavior<,>));
-            poc.AddOpenBehavior(typeof(ValidationBehavior<,>));
-        });
+        services.AddMediatR(config =>
+            config.RegisterServicesFromAssembly(assembly));
         services.AddValidatorsFromAssembly(assembly, includeInternalTypes: true);
-        services.AddScoped<IDomainEventDispatcher, MediatRDomainEventDispatcher>();
         return services;
     }
 }

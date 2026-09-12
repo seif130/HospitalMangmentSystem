@@ -1,21 +1,25 @@
+using HospitalSystem.Application.Abstractions.Persistence;
 using HospitalSystem.Domain.Primitives;
+using HospitalSystem.Procurement.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
-using HospitalSystem.Domain.Reprository;
 
-namespace HospitalSystem.Procurement.Infrastructure.Persistence.Repositories;
 
-public abstract class Repository<TEntity, TId>(ProcurementDbContext context)
-    : IRepository<TEntity, TId>
-    where TEntity : AggregateRoot<TId>
-    where TId : notnull
+namespace HospitalSystem.Infrastructure.Modules.Procurement.Persistence.Repositories;
+
+public abstract class Repository<TEntity, TId> : IRepository<TEntity, TId>
+    where TEntity : AggregateRoot<TId> where TId : notnull
 {
-    protected ProcurementDbContext Context { get; } =
-        context ?? throw new ArgumentNullException(nameof(context));
+    protected readonly ProcurementDbContext Context;
+    protected readonly DbSet<TEntity> DbSet;
 
-    protected DbSet<TEntity> DbSet => Context.Set<TEntity>();
+    protected Repository(ProcurementDbContext context)
+    {
+        Context = context ?? throw new ArgumentNullException(nameof(context));
+        DbSet = context.Set<TEntity>();
+    }
 
-    public virtual async Task<TEntity?> GetByIdAsync(TId id, CancellationToken ct = default)
-        => await DbSet.FindAsync([id], ct);
+    public virtual Task<TEntity?> GetByIdAsync(TId id, CancellationToken ct = default) =>
+        DbSet.FindAsync([id], ct).AsTask();
 
     public virtual async Task AddAsync(TEntity entity, CancellationToken ct = default)
     {

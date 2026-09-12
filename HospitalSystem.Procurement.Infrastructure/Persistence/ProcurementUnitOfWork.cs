@@ -1,46 +1,35 @@
-using System.Text.Json;
+using HospitalSystem.Application.Abstractions.Events;
 using HospitalSystem.Domain.Primitives;
-using HospitalSystem.Domain.Reprository;
-using HospitalSystem.Procurement.Infrastructure.Outbox;
+using HospitalSystem.Procurement.Application.Abstractions.Persistence;
 
 namespace HospitalSystem.Procurement.Infrastructure.Persistence;
 
-public sealed class ProcurementUnitOfWork(ProcurementDbContext context) : IUnitOfWork
+public sealed class ProcurementUnitOfWork(
+    ProcurementDbContext context,
+    IDomainEventDispatcher dispatcher) : IProcurementUnitOfWork
 {
-    private static readonly JsonSerializerOptions SerializerOptions = new(JsonSerializerDefaults.Web);
-
-    public async Task<int> SaveChangesAsync(CancellationToken ct = default)
+    public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        var eventEntries = context.ChangeTracker
+        var entities = context.ChangeTracker
             .Entries()
             .Select(entry => entry.Entity)
             .OfType<IHasDomainEvents>()
             .ToList();
 
-        var domainEvents = eventEntries
+        var events = entities
             .SelectMany(entity => entity.DomainEvents)
             .DistinctBy(domainEvent => domainEvent.EventId)
             .ToList();
 
-        foreach (var domainEvent in domainEvents)
+        var result = await context.SaveChangesAsync(cancellationToken);
+
+        if (events.Count > 0)
         {
-            var type = domainEvent.GetType();
-            var typeName = type.AssemblyQualifiedName ?? type.FullName ?? type.Name;
-            var payload = JsonSerializer.Serialize(domainEvent, type, SerializerOptions);
+            await dispatcher.DispatchAsync(events, cancellationToken);
 
-            await context.OutboxMessages.AddAsync(
-                new OutboxMessage(
-                    domainEvent.EventId,
-                    typeName,
-                    payload,
-                    domainEvent.OccurredOnUtc),
-                ct);
+            foreach (var entity in entities)
+                entity.ClearDomainEvents();
         }
-
-        var result = await context.SaveChangesAsync(ct);
-
-        foreach (var entity in eventEntries)
-            entity.ClearDomainEvents();
 
         return result;
     }

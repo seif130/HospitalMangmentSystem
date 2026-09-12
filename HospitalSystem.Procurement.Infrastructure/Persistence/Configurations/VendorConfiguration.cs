@@ -10,7 +10,8 @@ internal sealed class VendorConfiguration : IEntityTypeConfiguration<Vendor>
     {
         builder.ToTable("Vendors");
         builder.HasKey(x => x.Id);
-        builder.Property(x => x.Id).HasConversion(StrongIdValueConverters.VendorId()).ValueGeneratedNever();
+        builder.Ignore(x => x.DomainEvents);
+        builder.Property(x => x.Id).HasConversion(StrongIdValueConverters.VendorId());
 
         builder.Property(x => x.Name).HasMaxLength(200).IsRequired();
         builder.Property(x => x.NormalizedName).HasMaxLength(200).IsRequired();
@@ -18,6 +19,12 @@ internal sealed class VendorConfiguration : IEntityTypeConfiguration<Vendor>
         builder.Property(x => x.ContactPhone).HasMaxLength(50);
         builder.Property(x => x.Status).HasConversion<int>().IsRequired();
 
+        builder.Property(x => x.CreatedBy).HasMaxLength(100);
+        builder.Property(x => x.LastModifiedBy).HasMaxLength(100);
+        builder.Property(x => x.DeletedBy).HasMaxLength(100);
+
         builder.HasIndex(x => x.NormalizedName).IsUnique();
+        builder.HasIndex(x => x.Status);
+        builder.HasQueryFilter(x => !x.IsDeleted);
     }
 }

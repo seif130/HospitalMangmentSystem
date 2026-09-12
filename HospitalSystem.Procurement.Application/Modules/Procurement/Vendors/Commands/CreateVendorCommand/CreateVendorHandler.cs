@@ -1,9 +1,8 @@
-﻿using HospitalSystem.Application.Modules.Procurement.Abstractions;
-using HospitalSystem.Application.Shared.Common;
-using HospitalSystem.Application.Shared.Messaging;
-using HospitalSystem.Domain.Identifiers;
+﻿using HospitalSystem.Application.Abstractions.Messaging;
+using HospitalSystem.Application.Common;
 using HospitalSystem.Domain.Modules.Procurement.Vendors;
-using HospitalSystem.Domain.Modules.Procurement.Vendors.Contract;
+using HospitalSystem.Procurement.Application.Abstractions.Persistence;
+using HospitalSystem.Procurement.Domain.identfires;
 using System;
 using System.Collections.Generic;
 using System.Text;

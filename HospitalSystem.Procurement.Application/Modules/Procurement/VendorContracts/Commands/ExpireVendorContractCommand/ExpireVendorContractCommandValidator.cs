@@ -10,7 +10,6 @@ namespace HospitalSystem.Procurement.Application.Modules.Procurement.VendorContr
         public ExpireVendorContractCommandValidator() 
         {
             RuleFor(x => x.VendorContractId.Value).NotEmpty(); 
-            RuleFor(x => x.AsOfUtc).NotEqual(default(DateTime));
         }
     }
 

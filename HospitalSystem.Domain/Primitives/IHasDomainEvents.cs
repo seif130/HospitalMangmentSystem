@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+namespace HospitalSystem.Domain.Primitives;
 
-namespace HospitalSystem.Domain.Primitives
+public interface IHasDomainEvents
 {
-    public interface IHasDomainEvents
-    {
-        IReadOnlyCollection<IDomainEvent> DomainEvents { get; }
-
-        void ClearDomainEvents();
-    }
+    IReadOnlyCollection<IDomainEvent> DomainEvents { get; }
+    void ClearDomainEvents();
 }

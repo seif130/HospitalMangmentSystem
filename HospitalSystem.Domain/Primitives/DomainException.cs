@@ -1,20 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
+namespace HospitalSystem.Domain.Primitives;
 
-namespace HospitalSystem.Domain.Primitives
+public class DomainException : Exception
 {
-    public class DomainException : Exception
-    {
-        public DomainException(string message)
-            : base(message)
-        {
-        }
+    public DomainException(string message) : base(message) { }
 
-        public DomainException(string message, Exception innerException)
-            : base(message, innerException)
-        {
-        }
-    }
-
+    public DomainException(string message, Exception innerException)
+        : base(message, innerException) { }
 }

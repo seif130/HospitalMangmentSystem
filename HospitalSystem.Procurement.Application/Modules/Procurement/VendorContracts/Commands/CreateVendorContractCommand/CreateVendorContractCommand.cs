@@ -1,6 +1,7 @@
-﻿using HospitalSystem.Application.Shared.Messaging;
-using HospitalSystem.Domain.Identifiers;
+﻿
+using HospitalSystem.Application.Abstractions.Messaging;
 using HospitalSystem.Domain.Modules.Procurement.VendorContracts.Enums;
+using HospitalSystem.Procurement.Domain.identfires;
 using System;
 using System.Collections.Generic;
 using System.Text;

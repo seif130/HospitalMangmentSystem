@@ -1,4 +1,4 @@
-using HospitalSystem.Application.Modules.Procurement.Abstractions;
+using HospitalSystem.Application.Abstractions.Events;
 using HospitalSystem.Domain.Primitives;
 using MediatR;
 

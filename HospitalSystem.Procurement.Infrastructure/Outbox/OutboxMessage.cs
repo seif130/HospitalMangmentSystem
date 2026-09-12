@@ -4,11 +4,7 @@ public sealed class OutboxMessage
 {
     private OutboxMessage() { }
 
-    public OutboxMessage(
-        Guid id,
-        string type,
-        string payload,
-        DateTime occurredOnUtc)
+    public OutboxMessage(Guid id, string type, string payload, DateTime occurredOnUtc)
     {
         Id = id;
         Type = type;
